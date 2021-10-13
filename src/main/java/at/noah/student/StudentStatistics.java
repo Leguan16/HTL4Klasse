@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StudentStatistics {
@@ -43,7 +44,10 @@ public class StudentStatistics {
      * @return all students classes sorted alphabetically
      */
     public SortedSet<String> getClasses() {
-        return students.stream().map(Student::schoolClass).collect(Collectors.toCollection(TreeSet::new));
+        return students
+                .stream()
+                .map(Student::schoolClass)
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 
     /**
@@ -77,7 +81,10 @@ public class StudentStatistics {
      * @return the student or Optional.empty if no student matches criteria
      */
     public Optional<Student> findByNumberAndClass(int number, String schoolClass) {
-        return students.stream().filter(student -> student.number() == number && student.schoolClass().equals(schoolClass)).findFirst();
+        return students
+                .stream()
+                .filter(student -> student.number() == number && student.schoolClass().equals(schoolClass))
+                .findFirst();
     }
 
     /**
@@ -85,7 +92,10 @@ public class StudentStatistics {
      * @return any student whose name contains the highest number of letters in all names
      */
     public Student getStudentWithLongestName() {
-        return null;
+        return students
+                .stream()
+                .min((o1, o2) -> (o2.firstName().length() + o2.secondName().length()) - (o1.firstName().length() + o1.secondName().length()))
+                .orElseThrow(() -> new NoSuchElementException("No student was found!"));
     }
 
     /**
@@ -94,7 +104,20 @@ public class StudentStatistics {
      * @return the topX most frequent first names
      */
     public Set<String> getMostFrequentFirstNames(int count) {
-        return null;
+
+        if (count <= 0) {
+            throw new IllegalArgumentException("count cant be 0 or negative!");
+        }
+
+        return students
+                .stream()
+                .collect(Collectors.groupingBy(Student::firstName, TreeMap::new, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue()))
+                .map(Map.Entry::getKey)
+                .limit(count)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     /**
@@ -102,6 +125,13 @@ public class StudentStatistics {
      * @return count of students of each year
      */
     public Map<Integer, Long> countStudentsByYear() {
-        return null;
+        return students
+                .stream()
+                .collect(Collectors.toMap(
+                        student -> student.schoolClass().charAt(0) - '0',
+                        student -> 1L,
+                        Long::sum,
+                        HashMap::new
+                ));
     }
 }
