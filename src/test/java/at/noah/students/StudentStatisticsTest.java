@@ -22,7 +22,7 @@ class StudentStatisticsTest {
     final Path path;
 
     StudentStatisticsTest() throws URISyntaxException {
-        path = Path.of(getClass().getClassLoader().getResource("schueler.csv").toURI());
+        path = Path.of(getClass().getClassLoader().getResource("students/schueler.csv").toURI());
     }
 
     @Test
