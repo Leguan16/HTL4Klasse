@@ -1,7 +1,5 @@
 package at.noah.student.domain;
 
-import java.util.Comparator;
-
 public record Student(String schoolClass,
                       int number,
                       String firstName,
@@ -12,7 +10,7 @@ public record Student(String schoolClass,
         var splitted = csv.split(",");
         var firstName = splitted[1];
         var secondName = splitted[0];
-        Gender gender = null;//TODO
+        Gender gender = null;
 
         switch (splitted[2]) {
             case "M" -> gender = Gender.MALE;
