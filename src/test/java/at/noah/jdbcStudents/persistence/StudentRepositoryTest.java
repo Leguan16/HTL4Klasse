@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class StudentRepositoryTest {
 
-    public static final String JDBC_URL = "jdbc:h2:mem:students-test;INIT=RUNSCRIPT FROM 'classpath:schema.sql'";
+    public static final String JDBC_URL = "jdbc:h2:mem:students-test;INIT=RUNSCRIPT FROM 'classpath:/jdbcStudents/schema.sql'";
     private Connection connection;
     private StudentRepository repository;
 

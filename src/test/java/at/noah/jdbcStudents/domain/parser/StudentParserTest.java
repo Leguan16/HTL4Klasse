@@ -15,7 +15,7 @@ class StudentParserTest {
 
     @Test
     void reads_correct_students_from_file() throws URISyntaxException, IOException {
-        var filename = getClass().getClassLoader().getResource("students.csv");
+        var filename = getClass().getClassLoader().getResource("jdbcStudents/students.csv");
         Objects.requireNonNull(filename);
         var path = Path.of(filename.toURI());
 
