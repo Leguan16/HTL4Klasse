@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static at.noah.jdbcStudents.domain.Gender.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -148,12 +149,60 @@ public class StudentRepositoryTest {
 
     @Nested
     class FindingStudentByNumberAndClass {
-        //TODO
+
+        @Test
+        void works() throws SQLException {
+            var students = List.of(
+                    new Student("Baar", "Simon", MALE, 1, "1AHIF"),
+                    new Student("Winkler", "Philipp Josef", MALE, 20, "3BHIF"),
+                    new Student("Hofmann", "Dominik", MALE, 21, "3BHIF"),
+                    new Student("Filipa", "Fec", DIVERSE, 15, "1CHIF")
+            );
+            for (var student : students)
+                repository.save(student);
+
+            var expected = new Student("Hofmann", "Dominik", MALE, 21, "3BHIF");
+
+            Optional<Student> result = repository.findByNumberAndClass(21, "3BHIF");
+
+            assertThat(result).isPresent();
+
+            assertThat(result.get()).isEqualTo(expected);
+        }
+
+        @Test
+        void empty_optional_if_no_result() throws SQLException {
+            var students = List.of(
+                    new Student("Baar", "Simon", MALE, 1, "1AHIF"),
+                    new Student("Winkler", "Philipp Josef", MALE, 20, "3BHIF"),
+                    new Student("Hofmann", "Dominik", MALE, 21, "3BHIF"),
+                    new Student("Filipa", "Fec", DIVERSE, 15, "1CHIF")
+            );
+            for (var student : students)
+                repository.save(student);
+
+            assertThat(repository.findByNumberAndClass(10, "4AHIF")).isNotPresent();
+        }
     }
 
     @Nested
     class FindingStudentsByClass {
-        //TODO
+
+        @Test
+        void works() throws SQLException {
+            var expected = List.of(
+                    new Student("Baar", "Simon", MALE, 1, "1AHIF"),
+                    new Student("Winkler", "Philipp Josef", MALE, 2, "1AHIF"),
+                    new Student("Hofmann", "Dominik", MALE, 3, "1AHIF")
+            );
+            for (var student : expected)
+                repository.save(student);
+            repository.save(new Student("Filipa", "Fec", DIVERSE, 15, "1CHIF"));
+            repository.save(new Student("Filipa", "Fec", DIVERSE, 14, "1BHIF"));
+            repository.save(new Student("Filipa", "Fec", DIVERSE, 1, "5BHIF"));
+
+            assertThat(repository.findStudentsByClass("1AHIF")).containsExactlyElementsOf(expected);
+        }
     }
 
 }

@@ -37,8 +37,8 @@ public record Student (
             throw new IllegalArgumentException("Number out of range, must be in [1,36]");
         if (schoolClass.isBlank())
             throw new IllegalArgumentException("Student must belong to a class");
-        /*if (!schoolClass.matches("/[1-5][A-C](HIF)$/g"))
-            throw new IllegalArgumentException("Student class must be in correct format!");*/
+        if (!schoolClass.matches("[1-5][A-C]HIF"))
+            throw new IllegalArgumentException("Student class must be in correct format!");
     }
 
     @Override
@@ -50,4 +50,6 @@ public record Student (
     public int compareTo(Student o) {
         return Comparator.comparing(Student::schoolClass).thenComparing(Student::number).compare(this, o);
     }
+
+
 }

@@ -3,6 +3,7 @@ package at.noah.jdbcStudents.persistence;
 import at.noah.jdbcStudents.domain.Gender;
 import at.noah.jdbcStudents.domain.Student;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Stream;
@@ -20,13 +21,25 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
     @Override
     public Optional<Student> findByNumberAndClass(int number, String schoolClass) throws SQLException {
-        Statement statement = connection.createStatement();
 
-        statement.executeUpdate("""
-        
-        """);
+        String sql = """
+                select last_name, first_name, gender, student_number, class
+                from STUDENTS
+                where STUDENT_NUMBER = ? and CLASS = ?
+                """;
 
-        return Optional.empty();
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, number);
+            statement.setString(2, schoolClass);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return Optional.empty();
+            } else {
+                return createStudent(resultSet);
+            }
+        }
     }
 
     @Override
@@ -55,7 +68,30 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
     @Override
     public SortedSet<Student> findStudentsByClass(String schoolClass) throws SQLException {
-        return null;
+
+        String sql = """
+                select LAST_NAME, FIRST_NAME, GENDER, STUDENT_NUMBER, CLASS
+                from STUDENTS
+                where CLASS = ?
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1, schoolClass);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return new TreeSet<>();
+            } else {
+                SortedSet<Student> students = new TreeSet<>();
+
+                do {
+                    createStudent(resultSet).ifPresent(students::add);
+                }while (resultSet.next());
+
+                return students;
+            }
+        }
     }
 
     @Override
