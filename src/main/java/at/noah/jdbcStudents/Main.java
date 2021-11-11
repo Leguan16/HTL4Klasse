@@ -10,9 +10,6 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
-        //StudentParser studentParser = new StudentParser();
-        //studentParser.readFromCsv(Path.of("src/main/resources/jdbcStudents/students.csv"));
-
         Connection connection = DriverManager.getConnection("jdbc:h2:Databases/master.mv.db");
 
         JdbcStudentRepository repository = new JdbcStudentRepository(connection);
