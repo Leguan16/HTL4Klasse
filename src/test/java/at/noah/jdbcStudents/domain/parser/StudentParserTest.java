@@ -19,16 +19,11 @@ class StudentParserTest {
         Objects.requireNonNull(filename);
         var path = Path.of(filename.toURI());
 
-        try {
+
             var students = new StudentParser().readFromCsv(path);
 
             assertThat(students)
                     .extracting(Student::lastName)
                     .containsExactly("Ertl", "Frischmann", "Gangl", "Krapfenbauer", "Limani", "Novotny", "Panic", "Pfeifer");
-
-        } catch (IllegalArgumentException exception) {
-            System.out.println(exception.getMessage());
-        }
-
     }
 }

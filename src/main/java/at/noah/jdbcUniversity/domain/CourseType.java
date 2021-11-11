@@ -1,23 +1,25 @@
 package at.noah.jdbcUniversity.domain;
 
 
-public class CourseType {
+import java.util.Objects;
 
-    private final char id;
-    private final String description;
+public record CourseType(char id, String description) {
 
-    public CourseType(char id, String description) {
+    public CourseType {
         if (description.isBlank())
             throw new IllegalArgumentException();
-        this.id = id;
-        this.description = description;
     }
 
-    public char getId() {
-        return id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourseType that = (CourseType) o;
+        return id == that.id;
     }
 
-    public String getDescription() {
-        return description;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

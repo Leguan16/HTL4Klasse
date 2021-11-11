@@ -2,6 +2,7 @@ package at.noah.jdbcStudents.domain;
 
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 public record Student (
         String lastName,

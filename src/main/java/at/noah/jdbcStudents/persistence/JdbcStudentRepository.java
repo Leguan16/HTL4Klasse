@@ -15,7 +15,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
         Statement statement = connection.createStatement();
 
         statement.executeUpdate("""
-        truncate table STUDENTS
+        drop table JDBC_STUDENTS
         """);
     }
 
@@ -24,7 +24,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
         String sql = """
                 select last_name, first_name, gender, student_number, class
-                from STUDENTS
+                from JDBC_STUDENTS
                 where STUDENT_NUMBER = ? and CLASS = ?
                 """;
 
@@ -46,7 +46,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
     public Stream<Student> findAll() throws SQLException {
         String sql = """
                 select last_name, first_name, gender, student_number, class
-                from STUDENTS
+                from JDBC_STUDENTS
                 """;
 
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -71,7 +71,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
         String sql = """
                 select LAST_NAME, FIRST_NAME, GENDER, STUDENT_NUMBER, CLASS
-                from STUDENTS
+                from JDBC_STUDENTS
                 where CLASS = ?
                 """;
 
@@ -98,7 +98,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
     public Set<Student> findStudentsByGender(Gender gender) throws SQLException {
         String sql = """
                 select last_name, first_name, gender, student_number, class
-                from students
+                from JDBC_STUDENTS
                 where GENDER = ?;
                 """;
 
@@ -121,7 +121,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
     public Map<String, Integer> findClasses() throws SQLException {
         String sql = """
                 select CLASS, count(CLASS) as count
-                from students
+                from JDBC_STUDENTS
                 group by CLASS;
                 """;
 
@@ -157,7 +157,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
         }
 
         String sql = """
-        insert into STUDENTS values ( ?, ?, ?, ?, ? )
+        insert into JDBC_STUDENTS values ( ?, ?, ?, ?, ? )
         """;
         PreparedStatement statement = connection.prepareStatement(sql);
 
