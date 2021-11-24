@@ -5,11 +5,8 @@ import at.noah.jdbcUniversity.domain.CourseType;
 import at.noah.jdbcUniversity.domain.Professor;
 import at.noah.jdbcUniversity.domain.Student;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -98,7 +95,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
                 insert into COURSES (TYPE_ID, PROFESSOR_ID, DESCRIPTION, BEGIN_DATE) VALUES ( ?, ?, ?, ? )
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             statement.setString(1, String.valueOf(course.getType().id()));
 
             statement.setInt(2, course.getProfessor().getId());
