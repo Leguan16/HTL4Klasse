@@ -1,5 +1,6 @@
 package at.noah.jdbcUniversity.persistence;
 
+import at.noah.jdbcUniversity.domain.Course;
 import at.noah.jdbcUniversity.domain.Student;
 
 import java.sql.*;
@@ -8,6 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public record JdbcStudentRepository(Connection connection) implements StudentRepository {
+
+
+    private static CourseRepository courseRepository;
+
+    public JdbcStudentRepository {
+        courseRepository = new JdbcCourseRepository(connection);
+    }
 
     @Override
     public List<Student> findAll() throws SQLException {
@@ -113,6 +121,13 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
     @Override
     public void delete(Student student) throws SQLException {
+
+        List<Course> enrolledCourses = courseRepository.findAllByStudent(student);
+
+        for (Course course : enrolledCourses) {
+            courseRepository.unenrollFromCourse(student, course);
+        }
+
         String sql= """
                 delete from STUDENTS
                 where STUDENT_ID = ?

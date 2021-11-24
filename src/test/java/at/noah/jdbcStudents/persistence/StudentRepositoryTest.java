@@ -187,7 +187,6 @@ public class StudentRepositoryTest {
 
     @Nested
     class FindingStudentsByClass {
-
         @Test
         void works() throws SQLException {
             var expected = List.of(
