@@ -24,7 +24,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 from STUDENTS
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             List<Student> students = new ArrayList<>();
 
@@ -39,13 +39,13 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
     @Override
     public Optional<Student> findById(int id) throws SQLException {
 
-        String sql= """
+        String sql = """
                 select STUDENT_ID, LAST_NAME, FIRST_NAME
                 from STUDENTS
                 where STUDENT_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -64,11 +64,11 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
             throw new IllegalArgumentException("Student already has an ID!");
         }
 
-        String sql= """
+        String sql = """
                 INSERT into STUDENTS (LAST_NAME, FIRST_NAME) values ( ?, ? )
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, student.getLastName());
             statement.setString(2, student.getFirstName());
 
@@ -94,7 +94,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 where STUDENT_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, student.getId());
 
             ResultSet resultSet = statement.executeQuery();
@@ -110,7 +110,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 where STUDENT_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, student.getLastName());
             statement.setString(2, student.getFirstName());
             statement.setInt(3, student.getId());
@@ -128,12 +128,12 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
             courseRepository.unenrollFromCourse(student, course);
         }
 
-        String sql= """
+        String sql = """
                 delete from STUDENTS
                 where STUDENT_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, student.getId());
 
             statement.executeUpdate();

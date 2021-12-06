@@ -1,6 +1,5 @@
 package at.noah.jdbcUniversity.persistence;
 
-import at.noah.jdbcUniversity.domain.Course;
 import at.noah.jdbcUniversity.domain.CourseType;
 
 import java.sql.Connection;
@@ -8,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +40,7 @@ public record JdbcCourseTypeRepository(Connection connection) implements CourseT
                 where TYPE_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, String.valueOf(id));
 
             ResultSet resultSet = statement.executeQuery();

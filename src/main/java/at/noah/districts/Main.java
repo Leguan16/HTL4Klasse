@@ -18,7 +18,7 @@ public class Main {
 
         List<District> districts = new ArrayList<>();
 
-        try(Stream<String> lines = Files.lines(path).skip(1)) {
+        try (Stream<String> lines = Files.lines(path).skip(1)) {
             lines.forEach(s -> {
                 String[] values = s.split(",");
                 int id = Integer.parseInt(values[0]);

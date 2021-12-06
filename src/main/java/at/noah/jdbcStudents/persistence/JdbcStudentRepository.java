@@ -3,7 +3,6 @@ package at.noah.jdbcStudents.persistence;
 import at.noah.jdbcStudents.domain.Gender;
 import at.noah.jdbcStudents.domain.Student;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Stream;
@@ -15,8 +14,8 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
         Statement statement = connection.createStatement();
 
         statement.executeUpdate("""
-        drop table JDBC_STUDENTS
-        """);
+                drop table JDBC_STUDENTS
+                """);
     }
 
     @Override
@@ -28,7 +27,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 where STUDENT_NUMBER = ? and CLASS = ?
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, number);
             statement.setString(2, schoolClass);
 
@@ -49,7 +48,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 from JDBC_STUDENTS
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
@@ -59,7 +58,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
                 do {
                     createStudent(resultSet).ifPresent(students::add);
-                }while (resultSet.next());
+                } while (resultSet.next());
 
                 return students.stream();
             }
@@ -75,7 +74,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 where CLASS = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, schoolClass);
 
             ResultSet resultSet = statement.executeQuery();
@@ -87,7 +86,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
 
                 do {
                     createStudent(resultSet).ifPresent(students::add);
-                }while (resultSet.next());
+                } while (resultSet.next());
 
                 return students;
             }
@@ -102,7 +101,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 where GENDER = ?;
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, String.valueOf(gender.toString().toLowerCase().charAt(0)));
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -111,7 +110,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 Set<Student> studentSet = new TreeSet<>();
                 do {
                     createStudent(resultSet).ifPresent(studentSet::add);
-                }while (resultSet.next());
+                } while (resultSet.next());
                 return studentSet;
             }
         }
@@ -125,7 +124,7 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
                 group by CLASS;
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 return Map.of();
@@ -157,8 +156,8 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
         }
 
         String sql = """
-        insert into JDBC_STUDENTS values ( ?, ?, ?, ?, ? )
-        """;
+                insert into JDBC_STUDENTS values ( ?, ?, ?, ?, ? )
+                """;
         PreparedStatement statement = connection.prepareStatement(sql);
 
         statement.setString(1, lastName);
@@ -187,6 +186,6 @@ public record JdbcStudentRepository(Connection connection) implements StudentRep
             return Optional.empty();
         }
 
-       return Optional.of(new Student(lastName, firstName, studentGender, number, schoolClass));
+        return Optional.of(new Student(lastName, firstName, studentGender, number, schoolClass));
     }
 }

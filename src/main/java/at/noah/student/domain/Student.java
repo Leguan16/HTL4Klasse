@@ -4,7 +4,7 @@ public record Student(String schoolClass,
                       int number,
                       String firstName,
                       String secondName,
-                      Gender gender) implements Comparable<Student>{
+                      Gender gender) implements Comparable<Student> {
 
     public static Student of(String csv) {
         var splitted = csv.split(",");

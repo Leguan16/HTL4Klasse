@@ -10,7 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 
 import static at.noah.student.domain.Gender.FEMALE;
 import static at.noah.student.domain.Gender.MALE;

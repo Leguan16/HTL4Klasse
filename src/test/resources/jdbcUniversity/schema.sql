@@ -1,8 +1,8 @@
 create table professors
 (
     professor_id identity not null,
-    last_name  varchar(255),
-    first_name varchar(255),
+    last_name    varchar(255),
+    first_name   varchar(255),
     constraint professor_pk primary key (professor_id)
 );
 
@@ -15,7 +15,7 @@ create table course_types
 
 create table courses
 (
-    course_id identity not null,
+    course_id    identity not null,
     type_id      character(1),
     professor_id integer,
     description  varchar(100),
@@ -37,7 +37,7 @@ create table students
 
 create table courses_students
 (
-    course_id   integer not null,
+    course_id  integer not null,
     student_id integer not null,
     constraint courses_students_pkey primary key (student_id, course_id),
     constraint courses_students__students_fk foreign key (student_id)

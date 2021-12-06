@@ -1,11 +1,11 @@
 package at.noah.jdbcStudents;
 
-import at.noah.jdbcStudents.domain.parser.StudentParser;
 import at.noah.jdbcStudents.persistence.JdbcStudentRepository;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main {
 

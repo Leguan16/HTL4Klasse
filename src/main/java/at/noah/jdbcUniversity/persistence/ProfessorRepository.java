@@ -15,6 +15,7 @@ public interface ProfessorRepository {
 
     /**
      * Saves the professor.
+     *
      * @param professor professor to save
      * @return professor containing at least data as given
      * @throws SQLException

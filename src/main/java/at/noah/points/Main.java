@@ -39,7 +39,7 @@ public class Main {
             } else {
                 List<Quadrant> newList = new ArrayList<>();
                 newList.add(quadrant);
-                groupedQuadrants.put(quadrant.getQuadrant(),newList);
+                groupedQuadrants.put(quadrant.getQuadrant(), newList);
             }
         });
 
@@ -51,18 +51,15 @@ public class Main {
             if (quadrant.getQuadrant() != 1) {
                 quadrant.setQuadrant(1);
             }
-        } else
-        if (quadrant.getX() < 0 && quadrant.getY() > 0) {
+        } else if (quadrant.getX() < 0 && quadrant.getY() > 0) {
             if (quadrant.getQuadrant() != 2) {
                 quadrant.setQuadrant(2);
             }
-        } else
-        if (quadrant.getX() < 0 && quadrant.getY() < 0) {
+        } else if (quadrant.getX() < 0 && quadrant.getY() < 0) {
             if (quadrant.getQuadrant() != 3) {
                 quadrant.setQuadrant(3);
             }
-        } else
-        if (quadrant.getX() > 0 && quadrant.getY() < 0) {
+        } else if (quadrant.getX() > 0 && quadrant.getY() < 0) {
             if (quadrant.getQuadrant() != 4) {
                 quadrant.setQuadrant(4);
             }
@@ -73,8 +70,8 @@ public class Main {
 
     private static List<Quadrant> readFile(Path path) {
         List<Quadrant> quadrants = new ArrayList<>();
-        try(DataInputStream dataInputStream = new DataInputStream(Files.newInputStream(path))) {
-            while(dataInputStream.available() != 0) {
+        try (DataInputStream dataInputStream = new DataInputStream(Files.newInputStream(path))) {
+            while (dataInputStream.available() != 0) {
                 int quadrantInt = dataInputStream.readInt();
                 double x = dataInputStream.readDouble();
                 double y = dataInputStream.readDouble();
@@ -88,7 +85,7 @@ public class Main {
     }
 
     private static void writeFile(Path path, List<Quadrant> quadrants) {
-        try(DataOutputStream dataOutputStream = new DataOutputStream(Files.newOutputStream(path))) {
+        try (DataOutputStream dataOutputStream = new DataOutputStream(Files.newOutputStream(path))) {
             for (Quadrant quadrant : quadrants) {
                 dataOutputStream.writeInt(quadrant.getQuadrant());
                 dataOutputStream.writeDouble(quadrant.getX());

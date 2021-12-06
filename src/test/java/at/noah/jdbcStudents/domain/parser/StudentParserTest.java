@@ -20,10 +20,10 @@ class StudentParserTest {
         var path = Path.of(filename.toURI());
 
 
-            var students = new StudentParser().readFromCsv(path);
+        var students = new StudentParser().readFromCsv(path);
 
-            assertThat(students)
-                    .extracting(Student::lastName)
-                    .containsExactly("Ertl", "Frischmann", "Gangl", "Krapfenbauer", "Limani", "Novotny", "Panic", "Pfeifer");
+        assertThat(students)
+                .extracting(Student::lastName)
+                .containsExactly("Ertl", "Frischmann", "Gangl", "Krapfenbauer", "Limani", "Novotny", "Panic", "Pfeifer");
     }
 }

@@ -18,6 +18,7 @@ public interface CourseRepository {
 
     /**
      * Saves the course.
+     *
      * @param course course to save
      * @return course containing at least data as given
      * @throws SQLException

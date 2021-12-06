@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StudentStatistics {
@@ -16,6 +15,7 @@ public class StudentStatistics {
 
     /**
      * Reads all students from given csv-File.
+     *
      * @param path the file
      * @throws IOException
      */
@@ -29,6 +29,7 @@ public class StudentStatistics {
 
     /**
      * Counts all students of given gender
+     *
      * @param gender the gender
      * @return number of students of the given gender
      */
@@ -41,6 +42,7 @@ public class StudentStatistics {
 
     /**
      * Returns all students classes sorted alphabetically.
+     *
      * @return all students classes sorted alphabetically
      */
     public SortedSet<String> getClasses() {
@@ -52,6 +54,7 @@ public class StudentStatistics {
 
     /**
      * Returns a map containing the number students of each gender in a given class.
+     *
      * @param schoolClass the class
      * @return count of students of each gender
      */
@@ -64,6 +67,7 @@ public class StudentStatistics {
 
     /**
      * Returns all students whose second name contains the given sequence.
+     *
      * @param sequence the sequence to search for. Case sensitive
      * @return students named like %sequence%
      */
@@ -76,7 +80,8 @@ public class StudentStatistics {
 
     /**
      * Finds a student by number and class
-     * @param number students number
+     *
+     * @param number      students number
      * @param schoolClass students class
      * @return the student or Optional.empty if no student matches criteria
      */
@@ -89,6 +94,7 @@ public class StudentStatistics {
 
     /**
      * Returns the student with the longest name.
+     *
      * @return any student whose name contains the highest number of letters in all names
      */
     public Student getStudentWithLongestName() {
@@ -100,6 +106,7 @@ public class StudentStatistics {
 
     /**
      * Returns the most frequently found first names
+     *
      * @param count how many should be returned
      * @return the topX most frequent first names
      */
@@ -122,6 +129,7 @@ public class StudentStatistics {
 
     /**
      * Returns the number of students in each year.
+     *
      * @return count of students of each year
      */
     public Map<Integer, Long> countStudentsByYear() {

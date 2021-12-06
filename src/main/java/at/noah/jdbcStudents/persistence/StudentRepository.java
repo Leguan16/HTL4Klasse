@@ -16,7 +16,7 @@ public interface StudentRepository {
     /**
      * Tries to find a student matching given data
      *
-     * @param number            the student's number
+     * @param number      the student's number
      * @param schoolClass the student's class
      * @return the student wrapped in an {@link Optional}
      * @throws SQLException

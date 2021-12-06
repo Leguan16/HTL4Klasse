@@ -16,7 +16,7 @@ public record JdbcProfessorRepository(Connection connection) implements Professo
                 from PROFESSORS
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             List<Professor> professors = new ArrayList<>();
 
@@ -30,13 +30,13 @@ public record JdbcProfessorRepository(Connection connection) implements Professo
 
     @Override
     public Optional<Professor> findById(int id) throws SQLException {
-        String sql= """
+        String sql = """
                 select PROFESSOR_ID, LAST_NAME, FIRST_NAME
                 from PROFESSORS
                 where PROFESSOR_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -55,11 +55,11 @@ public record JdbcProfessorRepository(Connection connection) implements Professo
             throw new IllegalArgumentException("Professor already has an ID!");
         }
 
-        String sql= """
+        String sql = """
                 INSERT into PROFESSORS (LAST_NAME, FIRST_NAME) values ( ?, ? )
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, professor.getLastName());
             statement.setString(2, professor.getFirstName());
 
@@ -78,12 +78,12 @@ public record JdbcProfessorRepository(Connection connection) implements Professo
 
     @Override
     public void delete(Professor professor) throws SQLException {
-        String sql= """
+        String sql = """
                 delete from PROFESSORS
                 where PROFESSOR_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, professor.getId());
 
             statement.executeUpdate();

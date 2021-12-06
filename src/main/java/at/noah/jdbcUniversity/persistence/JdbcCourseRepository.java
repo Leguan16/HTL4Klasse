@@ -6,9 +6,10 @@ import at.noah.jdbcUniversity.domain.Professor;
 import at.noah.jdbcUniversity.domain.Student;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public record JdbcCourseRepository(Connection connection) implements CourseRepository {
 
@@ -31,7 +32,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
             ResultSet resultSet = statement.executeQuery();
             List<Course> courses = new ArrayList<>();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 createCourse(resultSet).ifPresent(courses::add);
             }
 
@@ -52,7 +53,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
             ResultSet resultSet = statement.executeQuery();
             List<Course> courses = new ArrayList<>();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 createCourse(resultSet).ifPresent(courses::add);
             }
 
@@ -95,7 +96,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
                 insert into COURSES (TYPE_ID, PROFESSOR_ID, DESCRIPTION, BEGIN_DATE) VALUES ( ?, ?, ?, ? )
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, String.valueOf(course.getType().id()));
 
             statement.setInt(2, course.getProfessor().getId());
@@ -123,7 +124,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
                 where courses.COURSE_ID in (select CS.COURSE_ID from COURSES_STUDENTS where CS.STUDENT_ID = ?)
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, student.getId());
 
             ResultSet resultSet = statement.executeQuery();
@@ -146,7 +147,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
                 insert into COURSES_STUDENTS (COURSE_ID, STUDENT_ID) values ( ?, ? )
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, course.getId());
             statement.setInt(2, student.getId());
 
@@ -160,7 +161,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
             throw new IllegalArgumentException("Both must have an ID");
         }
 
-        if (!findAllByStudent(student).contains(course)){
+        if (!findAllByStudent(student).contains(course)) {
             throw new IllegalArgumentException("Student not enrolled in course!");
         }
 
@@ -169,7 +170,7 @@ public record JdbcCourseRepository(Connection connection) implements CourseRepos
                 where STUDENT_ID = ? and COURSE_ID = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, student.getId());
             statement.setInt(2, course.getId());
 

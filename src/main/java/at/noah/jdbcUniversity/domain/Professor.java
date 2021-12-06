@@ -19,6 +19,10 @@ public class Professor {
         this.lastName = lastName;
     }
 
+    public Professor(String lastName, String firstName) {
+        this(null, lastName, firstName);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,10 +34,6 @@ public class Professor {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public Professor(String lastName, String firstName) {
-        this(null, lastName, firstName);
     }
 
     public Integer getId() {
