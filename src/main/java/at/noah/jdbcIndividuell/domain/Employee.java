@@ -32,6 +32,10 @@ public class Employee {
         this(id, name, dateOfBirth, job, null, entryDate, salary);
     }
 
+    public Employee(String name, LocalDate dateOfBirth, String job, LocalDate entryDate, Integer salary) {
+        this(null, name, dateOfBirth, job, null, entryDate, salary);
+    }
+
     public void setId(int id) {
         this.id = id;
     }

@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public class JdbcDeviceRepository implements DeviceRepository{
 
-    private Connection connection;
-    private EmployeeRepository employeeRepository;
+    private final Connection connection;
+    private final EmployeeRepository employeeRepository;
 
     public JdbcDeviceRepository(Connection connection, EmployeeRepository employeeRepository) {
         this.connection = connection;
@@ -59,9 +59,9 @@ public class JdbcDeviceRepository implements DeviceRepository{
     }
 
     @Override
-    public void save(Device toSave) throws SQLException {
-        if (toSave.getId() == null) {
-            return;
+    public Optional<Device> save(Device toSave) throws SQLException {
+        if (toSave.getId() != null) {
+            return Optional.empty();
         }
 
         String sql = """
@@ -75,9 +75,9 @@ public class JdbcDeviceRepository implements DeviceRepository{
 
             if (toSave.getDeviceOwner() != null) {
                 if (toSave.getDeviceOwner().getId() != null) {
-                    statement.setInt(1, toSave.getDeviceOwner().getId());
+                    statement.setInt(3, toSave.getDeviceOwner().getId());
                 } else {
-                    return;
+                    return Optional.empty();
                 }
             } else {
                 statement.setNull(3, Types.INTEGER);
@@ -88,15 +88,24 @@ public class JdbcDeviceRepository implements DeviceRepository{
             ResultSet resultSet = statement.getGeneratedKeys();
 
             if (resultSet.next()) {
+                Integer id = resultSet.getInt(1);
 
+                toSave.setId(id);
+                return Optional.of(toSave);
             }
         }
+
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Device toDelete) throws SQLException {
+    public boolean delete(Device toDelete) throws SQLException {
+        if (toDelete.getDeviceOwner() != null) {
+            return false;
+        }
+
         if (toDelete.getId() == null) {
-            return;
+            return false;
         }
 
         String sql = """
@@ -109,16 +118,66 @@ public class JdbcDeviceRepository implements DeviceRepository{
 
             statement.executeUpdate();
         }
+
+        return true;
     }
 
     @Override
-    public boolean registerDevice(Device device, Employee employee) {
-        return false;
+    public Optional<Device> registerDevice(Device device, Employee employee) throws SQLException {
+        if (device.getDeviceOwner() != null) {
+            return Optional.empty();
+        }
+
+        if (device.getId() == null || employee.getId() == null) {
+            return Optional.empty();
+        }
+
+        String sql = """
+                update devices
+                set device_owner = ?
+                where id = ?
+                """;
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, employee.getId());
+            statement.setInt(2, device.getId());
+
+            int rows = statement.executeUpdate();
+
+            if (rows > 0) {
+                device.setDeviceOwner(employee);
+                return Optional.of(device);
+            }
+        }
+
+        return Optional.empty();
     }
 
     @Override
-    public boolean unregisterDevice(Device device, Employee employee) {
-        return false;
+    public Optional<Device> unregisterDevice(Device device) throws SQLException {
+        if (device.getId() == null) {
+            return Optional.empty();
+        }
+
+        String sql = """
+                update devices
+                set device_owner = ?
+                where id = ?
+                """;
+
+        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setNull(1, Types.INTEGER);
+            statement.setInt(2, device.getId());
+
+            int rows = statement.executeUpdate();
+
+            if (rows > 0) {
+                device.setDeviceOwner(null);
+                return Optional.of(device);
+            }
+        }
+
+        return Optional.empty();
     }
 
     private Optional<Device> createDevice(ResultSet resultSet) throws SQLException {

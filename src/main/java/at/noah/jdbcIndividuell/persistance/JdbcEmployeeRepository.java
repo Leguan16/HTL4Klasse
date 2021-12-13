@@ -51,35 +51,46 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
     }
 
     @Override
-    public void save(Employee toSave) throws SQLException {
+    public Optional<Employee> save(Employee toSave) throws SQLException {
         String sql = """
                 insert into employees
-                values ( ?, ?, ?, ?, ?, ?, ? )
+                values ( ?, ?, ?, ?, ?, ? )
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, toSave.getId());
-            statement.setString(2, toSave.getName());
-            statement.setDate(3, Date.valueOf(toSave.getDateOfBirth()));
-            statement.setString(4, toSave.getJob());
+        try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, toSave.getName());
+            statement.setDate(2, Date.valueOf(toSave.getDateOfBirth()));
+            statement.setString(3, toSave.getJob());
 
             if (toSave.getSupervisor() != null) {
-                statement.setInt(5, toSave.getSupervisor().getId());
+                statement.setInt(4, toSave.getSupervisor().getId());
             } else {
-                statement.setNull(5, Types.INTEGER);
+                statement.setNull(4, Types.INTEGER);
             }
 
-            statement.setDate(6, Date.valueOf(toSave.getEntryDate()));
-            statement.setInt(7, toSave.getSalary());
+            statement.setDate(5, Date.valueOf(toSave.getEntryDate()));
+            statement.setInt(6, toSave.getSalary());
 
             statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+
+                toSave.setId(id);
+
+                return Optional.of(toSave);
+            }
         }
+
+        return Optional.empty();
     }
 
     @Override
-    public void delete(Employee toDelete) throws SQLException {
+    public boolean delete(Employee toDelete) throws SQLException {
         if (toDelete.getId() == null) {
-            return;
+            return false;
         }
 
         String sql = """
@@ -92,6 +103,8 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
 
             statement.executeUpdate();
         }
+
+        return true;
     }
 
     @Override

@@ -20,6 +20,10 @@ public class Device {
         this(null, category, dateOfAcquisition, null);
     }
 
+    public Device(String category, LocalDate dateOfAcquisition, Employee deviceOwner) {
+        this(null, category, dateOfAcquisition, deviceOwner);
+    }
+
     public Device(Integer id, String category, LocalDate dateOfAcquisition) {
         this(id, category, dateOfAcquisition, null);
     }
