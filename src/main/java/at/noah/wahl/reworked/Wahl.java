@@ -20,7 +20,7 @@ public class Wahl {
         logFile = getLogFile().orElseThrow(() -> new FileNotFoundException("Could not get Logfile"));
     }
 
-    private Optional<File> getLogFile() throws IOException {
+    public Optional<File> getLogFile() throws IOException {
         if (!Files.exists(Path.of("./logFile.txt"))) {
             return Optional.of(new File(String.valueOf(Files.createFile(Path.of("./logFile.txt")))));
         } else {
@@ -28,31 +28,20 @@ public class Wahl {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        Wahl wahl = new Wahl();
-        wahl.addCandidates(
-                new Kandidat("Dominik Hofmann"),
-                new Kandidat("Kilian Prager"),
-                new Kandidat("Niklas Hochstöger"),
-                new Kandidat("Paul Pfiel"),
-                new Kandidat("Raid Alarkhanov")
-        );
-
-        wahl.start();
-    }
-
-    private void addCandidates(Kandidat... candidates) {
+    public void addCandidates(Kandidat... candidates) {
         this.candidates.addAll(Arrays.stream(candidates).toList());
     }
 
-    private void start() {
+    public void start() {
         logEntryId = 0;
 
         try (PrintWriter fileWriter = new PrintWriter(new FileWriter(logFile));
              BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))){
 
-            System.out.print(decimalFormat.format(logEntryId) + " >");
-            fileWriter.print(decimalFormat.format(logEntryId) + " >");
+            printCanditates(fileWriter);
+
+            //System.out.println(decimalFormat.format(logEntryId) + " >");
+            //fileWriter.println(decimalFormat.format(logEntryId) + " >");
 
             String input;
 
@@ -62,6 +51,7 @@ public class Wahl {
 
                 fileWriter.println(input);
                 System.out.println(input);
+
 
                 if (isValid(input)) {
 
@@ -93,10 +83,7 @@ public class Wahl {
                     fileWriter.println("     Falsche Eingabe!");
                 } else {
                     logEntryId++;
-                    for (int a = 0; a < candidates.size(); a++) {
-                        System.out.println("    " + candidates.get(a));
-                        fileWriter.println("     " + candidates.get(a));
-                    }
+                    printCanditates(fileWriter);
                 }
                 System.out.println("-----------------------------------------------------------");
                 fileWriter.println("-----------------------------------------------------------");
@@ -110,7 +97,7 @@ public class Wahl {
 
     }
 
-    boolean isValid(String s) {
+    private boolean isValid(String s) {
         if (s.length() < 2) return false;
         char ch1 = s.charAt(0);
         char ch2 = s.charAt(1);
@@ -129,8 +116,11 @@ public class Wahl {
 
     }
 
-    private void printCanditates() {
-
+    private void printCanditates(PrintWriter fileWriter) {
+        for (Kandidat candidate : candidates) {
+            System.out.println("    " + candidate);
+            fileWriter.println("     " + candidate);
+        }
     }
 
 

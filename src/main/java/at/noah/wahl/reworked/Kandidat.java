@@ -3,7 +3,7 @@ package at.noah.wahl.reworked;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
-class Kandidat {
+public class Kandidat {
 
     private String name;
     private int punkte;
