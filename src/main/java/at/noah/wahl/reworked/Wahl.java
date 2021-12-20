@@ -1,30 +1,21 @@
 package at.noah.wahl.reworked;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.DecimalFormat;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Wahl {
     private final List<Candidate> candidates;
-    private final File logFile;
-    private int logEntryId;
-    private boolean mainOrSecond = true;
 
-    DecimalFormat decimalFormat = new DecimalFormat("000");
+
+    private final Logger logger;
 
     public Wahl() throws IOException {
         candidates = new ArrayList<>();
-        logFile = getLogFile().orElseThrow(() -> new FileNotFoundException("Could not get Logfile"));
-    }
-
-    public Optional<File> getLogFile() throws IOException {
-        if (!Files.exists(Path.of("./logFile.txt"))) {
-            return Optional.of(new File(String.valueOf(Files.createFile(Path.of("./logFile.txt")))));
-        } else {
-            return Optional.of(new File(String.valueOf(Path.of("./logFile.txt"))));
-        }
+        logger = new Logger();
     }
 
     public void addCandidates(Candidate... candidates) {
@@ -32,40 +23,28 @@ public class Wahl {
     }
 
     public void start() throws IOException {
-        logEntryId = 0;
+        try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
 
-        try (PrintWriter fileWriter = new PrintWriter(new FileWriter(logFile));
-             BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))){
-
-            printCanditates(fileWriter);
+            logger.printCanditates(candidates);
             String input;
 
             while (!"quit".equalsIgnoreCase(input = inputReader.readLine())) {
-                print(input, fileWriter);
+                logger.print(input);
 
                 int id = getNumber(input);
 
                 if (id != -1 && id <= candidates.size()) {
-                    addPoints(candidates.get(id));
-                    logEntryId++;
-                    printCanditates(fileWriter);
-                    mainOrSecond = !mainOrSecond;
+                    candidates.get(id).addPoints(logger.getMainOrSecond());
+                    logger.printCanditates(candidates);
+                    logger.setMainOrSecond(!logger.getMainOrSecond());
                 } else {
-                    print("     Falsche Eingabe!", fileWriter);
+                    logger.print("     Falsche Eingabe!");
                 }
 
-                print("-----------------------------------------------------------", fileWriter);
-                fileWriter.flush();
-                printInputLine(fileWriter);
-            }
-        }
-    }
+                logger.print("-----------------------------------------------------------");
 
-    private void addPoints(Candidate candidate) {
-        if (mainOrSecond) {
-            candidate.addPoints(2);
-        } else {
-            candidate.addPoints(1);
+                logger.printInputLine();
+            }
         }
     }
 
@@ -74,26 +53,6 @@ public class Wahl {
             return Integer.parseInt(input);
         } catch (NumberFormatException exception) {
             return -1;
-        }
-    }
-
-    private void print(String message, PrintWriter fileWriter) {
-        System.out.println(message);
-        fileWriter.println(message);
-    }
-
-    private void printCanditates(PrintWriter fileWriter) {
-        for (int i = 0; i < candidates.size(); i++) {
-            print(i+1 + "     " + candidates.get(i), fileWriter);
-        }
-        printInputLine(fileWriter);
-    }
-
-    private void printInputLine(PrintWriter fileWriter) {
-        if (mainOrSecond) {
-            print(decimalFormat.format(logEntryId) + " Main Vote>", fileWriter);
-        } else {
-            print(decimalFormat.format(logEntryId) + " Second Vote>", fileWriter);
         }
     }
 }

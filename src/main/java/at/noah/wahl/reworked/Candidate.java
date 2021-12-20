@@ -16,7 +16,7 @@ public class Candidate {
     }
 
 
-    public void addPoints(int p) {
+    private void addPoints(int p) {
         this.punkte += p;
         if (p == 2)
             this.platz1++;
@@ -47,4 +47,13 @@ public class Candidate {
     public String getLastName() {
         return lastName;
     }
+
+    public void addPoints(boolean main) {
+        if (main) {
+            addPoints(2);
+        } else {
+            addPoints(1);
+        }
+    }
+
 }
