@@ -1,6 +1,6 @@
 package at.noah.wahl.fx;
 
-import at.noah.wahl.reworked.Kandidat;
+import at.noah.wahl.reworked.Candidate;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
-    private TableView<Kandidat> tableView;
+    private TableView<Candidate> tableView;
 
     @FXML
     private Button buttonFirstVote;
@@ -23,13 +23,13 @@ public class Controller implements Initializable {
     @FXML
     private Button buttonUndo;
 
-    private static Kandidat selected;
+    private static Candidate selected;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         tableView.setOnMouseClicked(mouseEvent -> {
-            List<Kandidat> kandidaten = tableView.getSelectionModel().getSelectedItems();
+            List<Candidate> kandidaten = tableView.getSelectionModel().getSelectedItems();
 
             if (kandidaten.size() > 0) {
                 selected = kandidaten.get(0);

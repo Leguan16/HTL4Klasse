@@ -4,15 +4,14 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Wahl {
-    private final List<Kandidat> candidates;
+    private final List<Candidate> candidates;
     private final File logFile;
     private int logEntryId;
+    private boolean mainOrSecond = true;
+
     DecimalFormat decimalFormat = new DecimalFormat("000");
 
     public Wahl() throws IOException {
@@ -28,100 +27,73 @@ public class Wahl {
         }
     }
 
-    public void addCandidates(Kandidat... candidates) {
+    public void addCandidates(Candidate... candidates) {
         this.candidates.addAll(Arrays.stream(candidates).toList());
     }
 
-    public void start() {
+    public void start() throws IOException {
         logEntryId = 0;
 
         try (PrintWriter fileWriter = new PrintWriter(new FileWriter(logFile));
              BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))){
 
             printCanditates(fileWriter);
-
-            //System.out.println(decimalFormat.format(logEntryId) + " >");
-            //fileWriter.println(decimalFormat.format(logEntryId) + " >");
-
             String input;
 
-            while ((input = inputReader.readLine()) != null && !input.equals("quit")) {
-                int ok = 0;
-                int ul = 0;
+            while (!"quit".equalsIgnoreCase(input = inputReader.readLine())) {
+                print(input, fileWriter);
 
-                fileWriter.println(input);
-                System.out.println(input);
+                int id = getNumber(input);
 
-
-                if (isValid(input)) {
-
-                    if (input.charAt(0) == '-') {
-                        ul++;
-                        ok++;
-                    }
-                    if (input.charAt(1) == '-') {
-                        ul++;
-                        ok++;
-                    }
-                    if (ul > 1) ok = 0;
-
-                    for (int a = 0; a < candidates.size(); a++) {
-                        if (input.charAt(0) == candidates.get(a).firstChar()) {
-                            candidates.get(a).addPoints(2);
-                            ok += 1;
-                        }
-                        if (input.charAt(1) == candidates.get(a).firstChar()) {
-                            candidates.get(a).addPoints(1);
-                            ok += 1;
-                        }
-                    }
-
-                }
-
-                if (ok != 2) {
-                    System.out.println("     Falsche Eingabe!");
-                    fileWriter.println("     Falsche Eingabe!");
-                } else {
+                if (id != -1 && id <= candidates.size()) {
+                    addPoints(candidates.get(id));
                     logEntryId++;
                     printCanditates(fileWriter);
+                    mainOrSecond = !mainOrSecond;
+                } else {
+                    print("     Falsche Eingabe!", fileWriter);
                 }
-                System.out.println("-----------------------------------------------------------");
-                fileWriter.println("-----------------------------------------------------------");
-                fileWriter.flush();
-                System.out.print(decimalFormat.format(logEntryId) + " >");
-                fileWriter.print(decimalFormat.format(logEntryId) + " >");
-            }
-        } catch (IOException ioe) {
-            System.err.println("Error: " + ioe.getMessage());
-        }
 
+                print("-----------------------------------------------------------", fileWriter);
+                fileWriter.flush();
+                printInputLine(fileWriter);
+            }
+        }
     }
 
-    private boolean isValid(String s) {
-        if (s.length() < 2) return false;
-        char ch1 = s.charAt(0);
-        char ch2 = s.charAt(1);
-        int test1 = 0, test2 = 0;
-        if (s.length() != 2) return false;
-        if (ch1 == ch2) return false;
-        for (int i = 0; i < candidates.size(); i++) {
-            if (ch1 == candidates.get(i).firstChar()) test1++;
-            if (ch2 == candidates.get(i).firstChar()) test2++;
+    private void addPoints(Candidate candidate) {
+        if (mainOrSecond) {
+            candidate.addPoints(2);
+        } else {
+            candidate.addPoints(1);
         }
-        if (ch1 == '-') test1++;
-        if (ch2 == '-') test2++;
-        if (test1 != 1 || test2 != 1) return false;
+    }
 
-        return true;
+    private int getNumber(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException exception) {
+            return -1;
+        }
+    }
 
+    private void print(String message, PrintWriter fileWriter) {
+        System.out.println(message);
+        fileWriter.println(message);
     }
 
     private void printCanditates(PrintWriter fileWriter) {
-        for (Kandidat candidate : candidates) {
-            System.out.println("    " + candidate);
-            fileWriter.println("     " + candidate);
+        for (int i = 0; i < candidates.size(); i++) {
+            print(i+1 + "     " + candidates.get(i), fileWriter);
         }
+        printInputLine(fileWriter);
     }
 
-
+    private void printInputLine(PrintWriter fileWriter) {
+        if (mainOrSecond) {
+            print(decimalFormat.format(logEntryId) + " Main Vote>", fileWriter);
+        } else {
+            print(decimalFormat.format(logEntryId) + " Second Vote>", fileWriter);
+        }
+    }
 }
