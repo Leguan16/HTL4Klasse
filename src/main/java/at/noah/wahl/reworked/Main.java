@@ -1,10 +1,13 @@
 package at.noah.wahl.reworked;
 
+import at.noah.wahl.reworked.domain.Candidate;
+import at.noah.wahl.reworked.domain.Election;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Wahl wahl = new Wahl();
-        wahl.addCandidates(
+        Election election = new Election();
+        election.addCandidates(
                 new Candidate("Dominik", "Hofmann"),
                 new Candidate("Kilian", "Prager"),
                 new Candidate("Niklas", "Hochstöger"),
@@ -12,6 +15,6 @@ public class Main {
                 new Candidate("Raid", "Alarkhanov")
         );
 
-        wahl.start();
+        election.start();
     }
 }

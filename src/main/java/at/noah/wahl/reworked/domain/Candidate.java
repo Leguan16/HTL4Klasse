@@ -1,4 +1,4 @@
-package at.noah.wahl.reworked;
+package at.noah.wahl.reworked.domain;
 
 import java.text.DecimalFormat;
 import java.util.Objects;
@@ -7,7 +7,7 @@ public class Candidate {
 
     private final String firstName;
     private final String lastName;
-    private int punkte;
+    private int points;
     private int platz1;
 
     public Candidate(String firstName, String lastName) {
@@ -15,16 +15,9 @@ public class Candidate {
         this.lastName = lastName;
     }
 
-
-    private void addPoints(int p) {
-        this.punkte += p;
-        if (p == 2)
-            this.platz1++;
-    }
-
     public String toString() {
         DecimalFormat dc = new DecimalFormat("###0");
-        return dc.format(punkte) + " / " + dc.format(platz1) + "   " + this.firstName + " " + this.lastName;
+        return dc.format(points) + " / " + dc.format(platz1) + "   " + this.firstName + " " + this.lastName;
     }
 
     public char firstChar() {
@@ -36,24 +29,35 @@ public class Candidate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Candidate candidate = (Candidate) o;
-        return punkte == candidate.punkte && platz1 == candidate.platz1 && Objects.equals(firstName, candidate.firstName) && Objects.equals(getLastName(), candidate.getLastName());
+        return points == candidate.points && platz1 == candidate.platz1 && Objects.equals(firstName, candidate.firstName) && Objects.equals(getLastName(), candidate.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, getLastName(), punkte, platz1);
+        return Objects.hash(firstName, getLastName(), points, platz1);
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void addPoints(boolean main) {
-        if (main) {
-            addPoints(2);
-        } else {
-            addPoints(1);
+    public int addPoints(int mainOrSecond) {
+        int actualPoints = 1+mainOrSecond;
+        this.points += actualPoints;
+
+        if (actualPoints == 2) {
+            this.platz1++;
         }
+
+        return actualPoints;
+    }
+
+    public void removePoints(int points) {
+        if (points == 2) {
+            this.platz1--;
+        }
+
+        this.points -= points;
     }
 
 }
