@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcDeviceRepository implements DeviceRepository{
+public class JdbcDeviceRepository implements DeviceRepository {
 
     private final Connection connection;
     private final EmployeeRepository employeeRepository;
@@ -26,7 +26,7 @@ public class JdbcDeviceRepository implements DeviceRepository{
                 from devices
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
 
             List<Device> devices = new ArrayList<>();
@@ -46,7 +46,7 @@ public class JdbcDeviceRepository implements DeviceRepository{
                 where id = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -138,7 +138,7 @@ public class JdbcDeviceRepository implements DeviceRepository{
                 where id = ?
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, employee.getId());
             statement.setInt(2, device.getId());
 
@@ -165,7 +165,7 @@ public class JdbcDeviceRepository implements DeviceRepository{
                 where id = ?
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setNull(1, Types.INTEGER);
             statement.setInt(2, device.getId());
 

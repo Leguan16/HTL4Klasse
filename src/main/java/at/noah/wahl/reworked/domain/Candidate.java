@@ -42,7 +42,7 @@ public class Candidate {
     }
 
     public int addPoints(int mainOrSecond) {
-        int actualPoints = 1+mainOrSecond;
+        int actualPoints = 1 + mainOrSecond;
         this.points += actualPoints;
 
         if (actualPoints == 2) {

@@ -2,7 +2,10 @@ package at.noah.wahl.reworked.logger;
 
 import at.noah.wahl.reworked.domain.Candidate;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
@@ -11,10 +14,8 @@ import java.util.List;
 public class DefaultElectionLogger implements ElectionLogger<Candidate> {
 
     private final File logFile;
-    private boolean mainVote = true;
-
     private final DecimalFormat decimalFormat = new DecimalFormat("000");
-
+    private boolean mainVote = true;
     private int logEntryId = 0;
 
     public DefaultElectionLogger() {

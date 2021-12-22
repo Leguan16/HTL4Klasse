@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Device {
-    private Integer id;
     private final String category;
     private final LocalDate dateOfAcquisition;
+    private Integer id;
     private Employee deviceOwner;
 
     public Device(Integer id, String category, LocalDate dateOfAcquisition, Employee deviceOwner) {
@@ -27,13 +27,6 @@ public class Device {
     public Device(Integer id, String category, LocalDate dateOfAcquisition) {
         this(id, category, dateOfAcquisition, null);
     }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setDeviceOwner(Employee deviceOwner) {
-        this.deviceOwner = deviceOwner;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,6 +45,10 @@ public class Device {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -62,5 +59,9 @@ public class Device {
 
     public Employee getDeviceOwner() {
         return deviceOwner;
+    }
+
+    public void setDeviceOwner(Employee deviceOwner) {
+        this.deviceOwner = deviceOwner;
     }
 }

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public record JdbcEmployeeRepository(Connection connection) implements EmployeeRepository{
+public record JdbcEmployeeRepository(Connection connection) implements EmployeeRepository {
 
     @Override
     public List<Employee> findAll() throws SQLException {
@@ -18,11 +18,11 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
                 FROM employees
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(slq)) {
+        try (PreparedStatement statement = connection.prepareStatement(slq)) {
             ResultSet resultSet = statement.executeQuery();
             List<Employee> employees = new ArrayList<>();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 createEmployee(resultSet).ifPresent(employees::add);
             }
             return employees;
@@ -38,7 +38,7 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
                 where id = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
 
             ResultSet resultSet = statement.executeQuery();
@@ -57,7 +57,7 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
                 values ( ?, ?, ?, ?, ?, ? )
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, toSave.getName());
             statement.setDate(2, Date.valueOf(toSave.getDateOfBirth()));
             statement.setString(3, toSave.getJob());
@@ -98,7 +98,7 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
                 where id = ?
                 """;
 
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, toDelete.getId());
 
             statement.executeUpdate();
@@ -109,7 +109,7 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
 
     @Override
     public List<Employee> getEmployeesOfSupervisor(Integer supervisorId) throws SQLException {
-        if (supervisorId == null){
+        if (supervisorId == null) {
             return Collections.emptyList();
         }
 
@@ -119,14 +119,14 @@ public record JdbcEmployeeRepository(Connection connection) implements EmployeeR
                 where supervisor = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, supervisorId);
 
             ResultSet resultSet = statement.executeQuery();
 
             List<Employee> employees = new ArrayList<>();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 createEmployee(resultSet).ifPresent(employees::add);
             }
             return employees;

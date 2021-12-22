@@ -52,7 +52,7 @@ class JdbcDeviceRepositoryTest {
         @Test
         void works() throws SQLException {
             Employee owner = employeeRepository.findById(1).orElseThrow();
-            var device = new Device("Notebook" ,LocalDate.of(2021, 7, 17), owner);
+            var device = new Device("Notebook", LocalDate.of(2021, 7, 17), owner);
 
             deviceRepository.save(device);
 
@@ -62,7 +62,7 @@ class JdbcDeviceRepositoryTest {
 
         @Test
         void returns_empty_if_device_already_in_database() throws SQLException {
-            var device = new Device(1,"PC" ,LocalDate.of(2021, 7, 17));
+            var device = new Device(1, "PC", LocalDate.of(2021, 7, 17));
 
             Optional<Device> possibleDevice = deviceRepository.save(device);
 
@@ -73,7 +73,7 @@ class JdbcDeviceRepositoryTest {
         @Test
         void returns_empty_if_device_owner_does_not_have_an_id() throws SQLException {
             var owner = new Employee("Hans", LocalDate.of(2021, 7, 17), "IT", LocalDate.of(2021, 7, 17), 4000);
-            var device = new Device(1,"PC" ,LocalDate.of(2021, 7, 17));
+            var device = new Device(1, "PC", LocalDate.of(2021, 7, 17));
 
             Optional<Device> possibleDevice = deviceRepository.save(device);
 
@@ -163,7 +163,7 @@ class JdbcDeviceRepositoryTest {
     class Registering_and_unregistering {
 
         @Test
-        void works() throws SQLException{
+        void works() throws SQLException {
             var device = new Device("PC", LocalDate.now());
             var employee = new Employee("name", LocalDate.now(), "IT", LocalDate.now(), 5555);
 
@@ -178,7 +178,7 @@ class JdbcDeviceRepositoryTest {
         }
 
         @Test
-        void device_already_owned_by_someone() throws SQLException{
+        void device_already_owned_by_someone() throws SQLException {
             var employee = new Employee("name", LocalDate.now(), "IT", LocalDate.now(), 5555);
             var device = new Device("PC", LocalDate.now(), employee);
 
@@ -193,7 +193,7 @@ class JdbcDeviceRepositoryTest {
         }
 
         @Test
-        void device_and_or_employee_has_no_id() throws SQLException{
+        void device_and_or_employee_has_no_id() throws SQLException {
             var employee = new Employee("name", LocalDate.now(), "IT", LocalDate.now(), 5555);
             var device = new Device("PC", LocalDate.now(), employee);
 
@@ -202,9 +202,9 @@ class JdbcDeviceRepositoryTest {
         }
 
         @Test
-        void device_not_in_list_but_has_id() throws SQLException{
+        void device_not_in_list_but_has_id() throws SQLException {
             var employee = new Employee("name", LocalDate.now(), "IT", LocalDate.now(), 5555);
-            var device = new Device(2244,"PC", LocalDate.now(), employee);
+            var device = new Device(2244, "PC", LocalDate.now(), employee);
 
             assertThat(deviceRepository.registerDevice(device, employee))
                     .isEmpty();

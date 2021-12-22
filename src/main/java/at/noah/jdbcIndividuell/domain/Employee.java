@@ -5,14 +5,13 @@ import java.util.Objects;
 
 public class Employee {
 
-    private Integer id;
-    private Employee supervisor;
-
     private final String name;
     private final LocalDate dateOfBirth;
     private final String job;
     private final LocalDate entryDate;
     private final Integer salary;
+    private Integer id;
+    private Employee supervisor;
 
     public Employee(Integer id, String name, LocalDate dateOfBirth, String job, Employee supervisor, LocalDate entryDate, Integer salary) {
         this.id = id;
@@ -36,14 +35,6 @@ public class Employee {
         this(null, name, dateOfBirth, job, null, entryDate, salary);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setSupervisor(Employee supervisor) {
-        this.supervisor = supervisor;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,6 +52,10 @@ public class Employee {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -75,6 +70,10 @@ public class Employee {
 
     public Employee getSupervisor() {
         return supervisor;
+    }
+
+    public void setSupervisor(Employee supervisor) {
+        this.supervisor = supervisor;
     }
 
     public LocalDate getEntryDate() {
