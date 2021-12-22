@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 public class Election {
     private final List<Candidate> candidates;
 
     private final DefaultElectionLogger logger;
 
-    private final LinkedList<Vote> history = new LinkedList<>();
+    private final Stack<Vote> history = new Stack<>();
 
     public Election() {
         candidates = new ArrayList<>();
@@ -27,9 +27,9 @@ public class Election {
     }
 
     public void start() throws IOException {
-        try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
+        logger.printCandidates(candidates);
 
-            logger.printCandidates(candidates);
+        try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
             String input;
 
             while (!"quit".equalsIgnoreCase(input = inputReader.readLine())) {
@@ -44,12 +44,12 @@ public class Election {
 
     private void undoInput() {
         if (!history.isEmpty()) {
-            Vote vote = history.removeLast();
+            Vote vote = history.pop();
 
             vote.candidate().removePoints(vote.points());
-            logger.setMainOrSecond(!logger.getMainOrSecond());
+            logger.setMainVote(!logger.getMainVote());
         } else {
-            logger.print("      Nothing left to undo!");
+            logger.println("      Nothing left to undo!");
         }
         logger.printCandidates(candidates);
 
@@ -57,12 +57,12 @@ public class Election {
 
     private void processInput(String input) {
 
-        logger.print(input);
+        logger.println("Voting for: " + input);
 
         int id = getNumber(input);
 
         if (!inputValid(id)) {
-            logger.print("     Falsche Eingabe!");
+            logger.println("     Falsche Eingabe!");
             logger.printCandidates(candidates);
             return;
         }
@@ -71,16 +71,14 @@ public class Election {
 
         int pointsAdded = candidate.addPoints(logger.getMainOrSecondAsNumber());
 
-        history.addLast(new Vote(candidate, pointsAdded));
+        history.push(new Vote(candidate, pointsAdded));
 
+        logger.setMainVote(!logger.getMainVote());
         logger.printCandidates(candidates);
-
-        logger.setMainOrSecond(!logger.getMainOrSecond());
-
     }
 
     private boolean inputValid(int input) {
-        return input > 0 && input < candidates.size();
+        return input > 0 && input <= candidates.size();
     }
 
     private int getNumber(String input) {

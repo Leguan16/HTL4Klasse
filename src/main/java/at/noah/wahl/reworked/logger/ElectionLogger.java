@@ -6,6 +6,4 @@ public interface ElectionLogger<T> extends Logger {
 
     void printCandidates(List<T> candidates);
 
-
-
 }
