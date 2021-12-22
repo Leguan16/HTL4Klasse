@@ -2,13 +2,8 @@ package at.noah.wahl.reworked.domain;
 
 import at.noah.wahl.reworked.logger.DefaultElectionLogger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 public class Election {
     private final List<Candidate> candidates;
@@ -26,23 +21,21 @@ public class Election {
         this.candidates.addAll(Arrays.stream(candidates).toList());
     }
 
-    public void start() throws IOException {
+    public void start() {
         logger.printCandidates(candidates);
 
         try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
             String input;
 
             while (!"quit".equalsIgnoreCase(input = inputReader.readLine())) {
-                if ("undo".equalsIgnoreCase(input)) {
-                    undoInput();
-                } else {
-                    processInput(input);
-                }
+                processInput(input);
             }
+        } catch (IOException ioe) {
+            System.err.println("Error: " + ioe.getMessage());
         }
     }
 
-    private void undoInput() {
+    public void undoInput() {
         if (!history.isEmpty()) {
             Vote vote = history.pop();
 
@@ -55,18 +48,26 @@ public class Election {
 
     }
 
-    private void processInput(String input) {
+    public void processInput(String input) {
+        if ("undo".equalsIgnoreCase(input)) {
+            undoInput();
+        } else {
+            logger.println("Voting for: " + input);
 
-        logger.println("Voting for: " + input);
+            int id = getNumber(input);
 
-        int id = getNumber(input);
+            if (inputValid(id)) {
 
-        if (!inputValid(id)) {
-            logger.println("     Falsche Eingabe!");
-            logger.printCandidates(candidates);
-            return;
+                processVote(id);
+
+            } else {
+                logger.println("     Falsche Eingabe!");
+                logger.printCandidates(candidates);
+            }
         }
+    }
 
+    private void processVote(int id) {
         Candidate candidate = candidates.get(id - 1);
 
         int pointsAdded = candidate.addPoints(logger.getMainOrSecondAsNumber());
@@ -77,15 +78,19 @@ public class Election {
         logger.printCandidates(candidates);
     }
 
-    private boolean inputValid(int input) {
+    public boolean inputValid(int input) {
         return input > 0 && input <= candidates.size();
     }
 
-    private int getNumber(String input) {
+    public int getNumber(String input) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException exception) {
             return -1;
         }
+    }
+
+    public List<Candidate> getCandidates() {
+        return List.copyOf(candidates);
     }
 }

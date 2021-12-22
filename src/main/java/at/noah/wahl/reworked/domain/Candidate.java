@@ -20,27 +20,6 @@ public class Candidate {
         return dc.format(points) + " / " + dc.format(mainVoteCount) + "   " + this.firstName + " " + this.lastName;
     }
 
-    public char firstChar() {
-        return this.firstName.toLowerCase().charAt(0);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Candidate candidate = (Candidate) o;
-        return points == candidate.points && mainVoteCount == candidate.mainVoteCount && Objects.equals(firstName, candidate.firstName) && Objects.equals(getLastName(), candidate.getLastName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, getLastName(), points, mainVoteCount);
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     public int addPoints(int mainOrSecond) {
         int actualPoints = 1 + mainOrSecond;
         this.points += actualPoints;
@@ -60,4 +39,11 @@ public class Candidate {
         this.points -= points;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public int getMainVoteCount() {
+        return mainVoteCount;
+    }
 }

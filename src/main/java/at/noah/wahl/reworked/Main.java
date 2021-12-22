@@ -5,7 +5,7 @@ import at.noah.wahl.reworked.domain.Election;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Election election = new Election();
         election.addCandidates(
                 new Candidate("Dominik", "Hofmann"),
