@@ -12,7 +12,6 @@ public class SimpleCounter implements Counter {
         this.count = count;
     }
 
-
     @Override
     public int read() {
         return count;
