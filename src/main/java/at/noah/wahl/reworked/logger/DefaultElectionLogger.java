@@ -25,7 +25,6 @@ public class DefaultElectionLogger implements ElectionLogger<Candidate> {
 
     @Override
     public void printCandidates(List<Candidate> candidates) {
-        clearFile();
         println("ID    Stand   Name");
         for (int i = 0; i < candidates.size(); i++) {
             println((i + 1) + "     " + candidates.get(i));

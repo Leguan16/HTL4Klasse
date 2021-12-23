@@ -57,11 +57,11 @@ public class Wahl {
 
     public static void main(String[] args) {
 
-        if (args.length != 1) {
+        /*if (args.length != 1) {
             System.out.println("Keine Logdatei");
             System.out.println("Usage: java Wahl pathToLog");
             System.exit(1);
-        }
+        }*/
 
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -69,7 +69,7 @@ public class Wahl {
         int i = 1;
         DecimalFormat dc = new DecimalFormat("000");
         try {
-            PrintWriter out = new PrintWriter(new FileWriter(args[0]));
+            PrintWriter out = new PrintWriter("./logFile.txt");
             System.out.print(dc.format(i) + " >");
             out.print(dc.format(i) + " >");
             String ein;

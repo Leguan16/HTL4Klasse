@@ -2,8 +2,13 @@ package at.noah.wahl.reworked.domain;
 
 import at.noah.wahl.reworked.logger.DefaultElectionLogger;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 public class Election {
     private final List<Candidate> candidates;
@@ -30,6 +35,7 @@ public class Election {
             while (!"quit".equalsIgnoreCase(input = inputReader.readLine())) {
                 processInput(input);
             }
+
         } catch (IOException ioe) {
             System.err.println("Error: " + ioe.getMessage());
         }
