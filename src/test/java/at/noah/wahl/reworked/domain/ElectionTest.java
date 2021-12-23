@@ -76,7 +76,7 @@ class ElectionTest {
         election.processInput("2");
         election.processInput("3");
 
-        election.undoInput();
+        election.processInput("undo");
 
         Candidate niklas = election.getCandidates().get(2);
 
