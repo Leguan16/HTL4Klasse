@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ElectionTest {
 
@@ -16,6 +14,7 @@ class ElectionTest {
 
     @BeforeEach
     public void setup() {
+        System.err.println("\n\n!!! TEST RUNNING WITHOUT IS_LAST_VOTE_CHECK !!!\n");
         election = new Election();
 
         election.addCandidates(

@@ -17,6 +17,8 @@ public class Election {
 
     private final Stack<Vote> history = new Stack<>();
 
+    private int lastVote = -1;
+
     public Election() {
         candidates = new ArrayList<>();
         logger = new DefaultElectionLogger();
@@ -50,8 +52,6 @@ public class Election {
         } else {
             logger.println("      Nothing left to undo!");
         }
-        logger.printCandidates(candidates);
-
     }
 
     public void processInput(String input) {
@@ -65,12 +65,13 @@ public class Election {
             if (inputValid(id)) {
 
                 processVote(id);
-
+                //lastVote = id;
             } else {
                 logger.println("     Falsche Eingabe!");
-                logger.printCandidates(candidates);
             }
         }
+
+        logger.printCandidates(candidates);
     }
 
     private void processVote(int id) {
@@ -81,11 +82,20 @@ public class Election {
         history.push(new Vote(candidate, pointsAdded));
 
         logger.setMainVote(!logger.getMainVote());
-        logger.printCandidates(candidates);
     }
 
     public boolean inputValid(int input) {
-        return input > 0 && input <= candidates.size();
+        return (input > 0 && input <= candidates.size()); //&& !voteIsLastVote(input);
+    }
+
+    public boolean voteIsLastVote(int id) {
+        boolean isLastVote = false;
+        if (!logger.getMainVote()) {
+            isLastVote = (id == lastVote);
+            undoInput();
+        }
+
+        return isLastVote;
     }
 
     public int getNumber(String input) {

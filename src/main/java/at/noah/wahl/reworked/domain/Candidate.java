@@ -1,7 +1,6 @@
 package at.noah.wahl.reworked.domain;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 public class Candidate {
 
