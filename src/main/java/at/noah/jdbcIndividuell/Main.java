@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlserver://10.128.6.6;database=bernhard_caritas", "sa", "");
+        Connection connection = DriverManager.getConnection("jdbc:h2:./Databases/individuell");
 
         EmployeeRepository employeeRepository = new JdbcEmployeeRepository(connection);
         DeviceRepository deviceRepository = new JdbcDeviceRepository(connection, employeeRepository);
