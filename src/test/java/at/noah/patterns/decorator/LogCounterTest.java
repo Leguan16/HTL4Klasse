@@ -23,7 +23,7 @@ public class LogCounterTest {
     }
 
     @Test
-    void initial_read_as_underlying() {
+    void initial_read_as_underlying() throws IOException {
         Counter counter = new LogCounter(new LoopCounter(42), logFile);
 
         int count = counter.read();
@@ -31,7 +31,7 @@ public class LogCounterTest {
     }
 
     @Test
-    void tick_increases_read_value() {
+    void tick_increases_read_value() throws IOException {
         Counter counter = new LogCounter(new SimpleCounter(), logFile);
 
         counter.tick()

@@ -18,9 +18,9 @@ public class LimitedCounter extends CounterDecorator implements Counter {
     @Override
     public Counter tick() {
         if (count < limit) {
-            super.getCounter().tick();
+            super.tick();
             count++;
         }
-        return super.getCounter();
+        return this;
     }
 }

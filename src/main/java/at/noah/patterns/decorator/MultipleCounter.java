@@ -7,5 +7,22 @@ public class MultipleCounter extends CounterDecorator {
 
     public MultipleCounter(Counter counter, int multiple) {
         super(counter);
+
+        if (multiple < 1) {
+            throw new IllegalArgumentException("multiple must not be lower then 1");
+        }
+
+        this.multiple = multiple;
+    }
+
+    @Override
+    public Counter tick() {
+        tickCallsSinceLastSuperTick++;
+        if (tickCallsSinceLastSuperTick == multiple) {
+            super.tick();
+            tickCallsSinceLastSuperTick = 0;
+        }
+
+        return this;
     }
 }
