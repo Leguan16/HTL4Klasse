@@ -3,7 +3,6 @@ package at.noah.patterns.decorator;
 public class LimitedCounter extends CounterDecorator implements Counter {
 
     private final int limit;
-    private int count;
 
     public LimitedCounter(Counter counter, int limit) {
         super(counter);
@@ -12,15 +11,12 @@ public class LimitedCounter extends CounterDecorator implements Counter {
 
     @Override
     public int read() {
-        return super.getCounter().read();
+        return Math.min(getCounter().read(), limit);
     }
 
     @Override
     public Counter tick() {
-        if (count < limit) {
-            super.tick();
-            count++;
-        }
+        getCounter().tick();
         return this;
     }
 }

@@ -1,5 +1,3 @@
-use bernhard_caritas
-
 drop table if exists devices
 drop table if exists clients
 drop table if exists departments

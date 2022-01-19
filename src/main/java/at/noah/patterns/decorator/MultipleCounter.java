@@ -17,12 +17,25 @@ public class MultipleCounter extends CounterDecorator {
 
     @Override
     public Counter tick() {
-        tickCallsSinceLastSuperTick++;
+        /*tickCallsSinceLastSuperTick++;
         if (tickCallsSinceLastSuperTick == multiple) {
             super.tick();
             tickCallsSinceLastSuperTick = 0;
         }
+        */
+
+        if (tickCallsSinceLastSuperTick == multiple - 1) {
+            tickCallsSinceLastSuperTick = 0;
+            super.tick();
+        } else {
+            tickCallsSinceLastSuperTick++;
+        }
 
         return this;
+    }
+
+    @Override
+    public int read() {
+        return super.read();
     }
 }

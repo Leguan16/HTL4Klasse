@@ -1,6 +1,3 @@
-use bernhard_caritas
-GO
-
 delete from devices
 delete from clients
 delete from departments
@@ -55,6 +52,3 @@ insert into clients values (7, 'Renaldo Swallwell', '2002-07-12', 4);
 insert into clients values (8, 'Kenyon Lennard', '1998-06-01', 2);
 insert into clients values (9, 'Arlan Watmough', '1995-02-15', 2);
 insert into clients values (10, 'Coleman Champken', '1999-08-30', 5);
-
-
-GO

@@ -65,8 +65,8 @@ public class JdbcDeviceRepository implements DeviceRepository {
         }
 
         String sql = """
-                insert into devices(category, date_of_acquisition, device_owner)
-                values ( ?, ?, ? )
+                insert into devices(id, category, date_of_acquisition, device_owner)
+                values (?, ?, ?, ? )
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
