@@ -55,11 +55,11 @@ public class Run {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Run run = (Run) o;
-        return Objects.equals(id, run.id) && Objects.equals(date, run.date) && Objects.equals(distanceInKm, run.distanceInKm) && Objects.equals(minutes, run.minutes);
+        return Objects.equals(id, run.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, distanceInKm, minutes);
+        return Objects.hash(id);
     }
 }

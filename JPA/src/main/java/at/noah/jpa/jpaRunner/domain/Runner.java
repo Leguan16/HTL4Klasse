@@ -71,11 +71,11 @@ public class Runner {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Runner runner = (Runner) o;
-        return Objects.equals(id, runner.id) && Objects.equals(name, runner.name) && gender == runner.gender;
+        return Objects.equals(id, runner.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, gender);
+        return Objects.hash(id);
     }
 }
