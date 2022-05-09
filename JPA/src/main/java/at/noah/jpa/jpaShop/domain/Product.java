@@ -1,4 +1,4 @@
-package at.noah.jpaShop.domain;
+package at.noah.jpa.jpaShop.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;

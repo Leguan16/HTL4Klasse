@@ -1,8 +1,8 @@
-package at.noah.jpaShop;
+package at.noah.jpa.jpaShop;
 
-import at.noah.jpaShop.domain.Category;
-import at.noah.jpaShop.domain.Manufacturer;
-import at.noah.jpaShop.domain.Product;
+import at.noah.jpa.jpaShop.domain.Category;
+import at.noah.jpa.jpaShop.domain.Manufacturer;
+import at.noah.jpa.jpaShop.domain.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        EntityManager manager = Persistence.createEntityManagerFactory("at.noah.jpa.shop").createEntityManager();
+        EntityManager manager = Persistence.createEntityManagerFactory("at.noah.jpa.jpaShop").createEntityManager();
 
         Category phoneCategory = new Category("phone");
         Category kitchenCategory = new Category("kitchen");

@@ -1,13 +1,11 @@
-package at.noah.jpaShop.domain;
+package at.noah.jpa.jpaShop.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
