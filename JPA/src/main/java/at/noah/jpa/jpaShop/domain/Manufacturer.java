@@ -33,7 +33,7 @@ public class Manufacturer {
         this.name = name;
     }
 
-   public Manufacturer(String name, List<Product> products) {
+    public Manufacturer(String name, List<Product> products) {
         this.name = name;
         this.products = products;
     }

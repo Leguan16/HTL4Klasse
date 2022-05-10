@@ -4,7 +4,10 @@ package at.noah.jpa.jpaRunner.service;
 import at.noah.jpa.jpaRunner.domain.Run;
 import at.noah.jpa.jpaRunner.domain.Runner;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.Set;
 
 public interface Service {
 

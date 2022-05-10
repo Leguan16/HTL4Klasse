@@ -1,13 +1,19 @@
 package at.noah.jpa.jpaRunner.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 public class Runner {
@@ -24,20 +30,9 @@ public class Runner {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Run> runs = new ArrayList<>();
 
-    public Runner() {
-
-    }
-
     public Runner(String name, Gender gender) {
         this.name = name;
         this.gender = gender;
-    }
-
-    public Runner(Long id, String name, Gender gender, List<Run> runs) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.runs = runs;
     }
 
     public Long getId() {
@@ -54,16 +49,6 @@ public class Runner {
 
     public List<Run> getRuns() {
         return runs;
-    }
-
-    public void addRun(Run run) {
-        if (!runs.contains(run)) {
-            runs.add(run);
-        }
-
-        if (!this.equals(run.getRunner())) {
-            run.setRunner(this);
-        }
     }
 
     @Override

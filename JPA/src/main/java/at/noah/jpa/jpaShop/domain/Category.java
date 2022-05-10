@@ -51,6 +51,7 @@ public class Category {
     public void removeProduct(Product product) {
         products.remove(product);
     }
+
     public Stream<Product> getProductsAsStream() {
         return products.stream();
     }

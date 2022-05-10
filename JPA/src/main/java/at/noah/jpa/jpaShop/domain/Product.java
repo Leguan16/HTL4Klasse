@@ -66,7 +66,7 @@ public class Product {
         this.categories.addAll(List.of(categories));
 
         for (Category category : categories) {
-            if(category.getProductsAsStream().noneMatch(this::equals)) {
+            if (category.getProductsAsStream().noneMatch(this::equals)) {
                 category.addProducts(this);
             }
         }
