@@ -32,6 +32,14 @@ public class Run {
         return runner;
     }
 
+    public Double getDistanceInKm() {
+        return distanceInKm;
+    }
+
+    public Integer getMinutes() {
+        return minutes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,7 +26,7 @@ public class Runner {
     private Gender gender;
 
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "runner")
     private List<Run> runs = new ArrayList<>();
 
     public Runner(String name, Gender gender) {
