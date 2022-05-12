@@ -1,10 +1,10 @@
 package at.noah.jpa.jpaRunner.domain;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 
 @Entity
 public class Runner {
@@ -23,6 +24,7 @@ public class Runner {
 
     private String name;
 
+    @Setter
     private Gender gender;
 
 
@@ -32,22 +34,6 @@ public class Runner {
     public Runner(String name, Gender gender) {
         this.name = name;
         this.gender = gender;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public List<Run> getRuns() {
-        return runs;
     }
 
     @Override

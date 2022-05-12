@@ -1,7 +1,9 @@
 package at.noah.jpa.jpaRunner.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -10,6 +12,7 @@ import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 
 @Entity
 public class Run {
@@ -20,25 +23,15 @@ public class Run {
 
     private LocalDate date;
 
+    @Positive
     private Double distanceInKm;
 
+    @Positive
     private Integer minutes;
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Runner runner;
-
-    public Runner getRunner() {
-        return runner;
-    }
-
-    public Double getDistanceInKm() {
-        return distanceInKm;
-    }
-
-    public Integer getMinutes() {
-        return minutes;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -24,6 +24,7 @@ public class JpaService implements Service {
 
     @Override
     public List<Runner> findAll() {
+        entityManager.clear();
         return entityManager.createQuery("""
                 select runner from Runner runner
                 """, Runner.class).getResultList();
@@ -70,6 +71,9 @@ public class JpaService implements Service {
             return Optional.of(query.getSingleResult());
         } catch (NoResultException exception) {
             return Optional.empty();
+        } finally {
+
+            entityManager.clear();
         }
     }
 
@@ -92,10 +96,11 @@ public class JpaService implements Service {
     public Runner save(Runner runner) {
         entityManager.getTransaction().begin();
 
-        entityManager.persist(runner);
+        runner = entityManager.merge(runner);
 
         entityManager.getTransaction().commit();
 
+        entityManager.clear();
         return runner;
     }
 
@@ -103,10 +108,11 @@ public class JpaService implements Service {
     public Run save(Run run) {
         entityManager.getTransaction().begin();
 
-        entityManager.persist(run);
+        run = entityManager.merge(run);
 
         entityManager.getTransaction().commit();
 
+        entityManager.clear();
         return run;
     }
 }
