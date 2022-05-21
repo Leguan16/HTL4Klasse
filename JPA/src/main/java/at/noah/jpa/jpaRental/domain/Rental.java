@@ -1,6 +1,9 @@
 package at.noah.jpa.jpaRental.domain;
 
 
+import at.noah.jpa.jpaRental.domain.exceptions.CarNotAvailableException;
+import at.noah.jpa.jpaRental.persistance.RentalRepository;
+import at.noah.jpa.jpaRental.persistance.Repository;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.*;
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @ToString
@@ -50,16 +54,6 @@ public class Rental {
         if (o == null || getClass() != o.getClass()) return false;
         Rental rental = (Rental) o;
         return Objects.equals(id, rental.id);
-    }
-
-    public Rental(Long id, Double drivenKm, LocalDateTime beginning, LocalDateTime end, Car car, Station rentalStation, Station returnStation) {
-        this.id = id;
-        this.beginning = beginning;
-        this.end = end;
-        this.car = car;
-        this.rentalStation = rentalStation;
-        this.returnStation = returnStation;
-        this.drivenKm = drivenKm;
     }
 
     @Override

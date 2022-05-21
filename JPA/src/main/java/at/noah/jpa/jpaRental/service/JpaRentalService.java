@@ -10,6 +10,7 @@ import at.noah.jpa.jpaRental.persistance.RentalRepository;
 import at.noah.jpa.jpaRental.persistance.Repository;
 import at.noah.jpa.jpaRental.persistance.StationRepository;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.validation.constraints.AssertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,28 +21,15 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
 
     @Override
     public Rental save(Rental rental) {
-
-        if (rental.isValid()) {
-
-        }
-
-        /*if (rental.getEnd() != null && rental.getDrivenKm() != null && rental.getReturnStation() != null) {
-
-        } else {
-            throw new IllegalArgumentException();
-        }
-*/
         if (rental.getEnd() != null && rental.getEnd().isBefore(rental.getBeginning())) {
             throw new IllegalArgumentException("End cannot be before beginning.");
         }
-        Repository<Rental, Long> repository = new RentalRepository(entityManagerFactory.createEntityManager());
 
+        Repository<Rental, Long> repository = new RentalRepository(entityManagerFactory.createEntityManager());
 
         if (repository.findAll().stream().anyMatch(checkedRental -> {
             if (rental.getEnd() != null) {
-                if (checkedRental.getBeginning().isBefore(rental.getEnd())) {
-                    return true;
-                }
+                return checkedRental.getBeginning().isBefore(rental.getEnd());
             }
 
             return false;
@@ -50,7 +38,6 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
         }
 
         return repository.save(rental);
-
     }
 
     @Override
@@ -99,7 +86,7 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
             throw new IllegalArgumentException("Rental already finished");
         }
 
-        Repository<Rental, Long> repository = new RentalRepository(entityManagerFactory.createEntityManager());
+        var rentalRepository = new RentalRepository(entityManagerFactory.createEntityManager());
 
         rental.setEnd(LocalDateTime.now());
         rental.setReturnStation(station);
@@ -108,6 +95,6 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
         rental.getCar().addMileage(drivenKm);
         rental.getCar().setLocation(station);
 
-        return repository.save(rental);
+        return rentalRepository.save(rental);
     }
 }
