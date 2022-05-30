@@ -31,7 +31,6 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
             if (rental.getEnd() != null) {
                 return checkedRental.getBeginning().isBefore(rental.getEnd());
             }
-
             return false;
         })) {
             throw new CarNotAvailableException();
@@ -79,7 +78,7 @@ public record JpaRentalService(EntityManagerFactory entityManagerFactory) implem
     public Rental finish(Rental rental, Station station, double drivenKm) {
 
         if (rental == null || station == null || drivenKm < 0 || Double.isNaN(drivenKm) || Double.isInfinite(drivenKm)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Rental must be finished");
         }
 
         if (rental.getDrivenKm() != null) {
