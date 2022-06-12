@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("select sum(t.hoursWorked) from Task t where t.assignedEmployee.id = ?1")
+    @Query("select sum(t.hoursWorked) from Task t where t.assignedEmployee = ?1")
     long getTotalHoursWorkedByEmployee(Employee employee);
 
 

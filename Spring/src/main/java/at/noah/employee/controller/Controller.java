@@ -63,7 +63,6 @@ public class Controller {
 
     @GetMapping("/{id}/hoursWorked")
     public Long getHoursWorked(@PathVariable String id) throws EmployeeNotFoundException {
-        ;
 
         return taskRepository.getTotalHoursWorkedByEmployee(getById(id));
     }

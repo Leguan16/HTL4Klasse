@@ -1,0 +1,59 @@
+### get all employees
+GET localhost:8080/api/employees
+
+<> 2022-06-12T221749.200.json
+
+### get a specific employee
+GET localhost:8080/api/employees/HUBE
+
+<> 2022-06-12T221816.200.json
+<> 2022-06-12T221810.200.json
+<> 2022-06-12T221749.200.json
+
+### request a employee which does not exist
+GET localhost:8080/api/employees/HUBA
+
+<> 2022-06-12T221826.404.txt
+<> 2022-06-12T221816.200.json
+<> 2022-06-12T221810.200.json
+<> 2022-06-12T221749.200.json
+
+###
+GET localhost:8080/api/employees?name=Ba
+
+<> 2022-06-12T221826.404.txt
+<> 2022-06-12T221816.200.json
+<> 2022-06-12T221810.200.json
+<> 2022-06-12T221749.200.json
+
+### does not work
+GET localhost:8080/api/employees?name=Bu
+
+<> 2022-06-12T221826.404.txt
+<> 2022-06-12T221816.200.json
+<> 2022-06-12T221810.200.json
+<> 2022-06-12T221749.200.json
+
+### post a new employee
+POST localhost:8080/api/employees
+content-type: application/json
+
+{
+  "id": "NOBE",
+  "firstName": "Noah",
+  "lastName": "bernhard"
+}
+### get total hoursWorked for specified employee
+GET localhost:8080/api/employees/HUBE/hoursWorked
+
+### get total hoursWorked for employee which does not exist
+GET localhost:8080/api/employees/HUBA/hoursWorked
+
+### get all task from a specified employee from to
+GET localhost:8080/api/employees/HUBE/tasks?from=2019-05-17&to=2019-05-18
+
+### to can not be before from
+GET localhost:8080/api/employees/HUBE/tasks?from=2019-05-17&to=2019-05-12
+
+### employee does not exits
+GET localhost:8080/api/employees/HUBA/tasks?from=2019-05-17&to=2019-05-18
